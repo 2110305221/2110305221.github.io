@@ -1,0 +1,35 @@
+.centered
+{
+	text-align:center;
+}
+.highlight_text
+{
+	color:palevioletred;
+	font-style:italic;
+	font-size: 30px;
+}	
+.normal_text
+{
+	color:peru;
+}
+.deleted_text
+{
+	color:grey;
+	text-decoration:line-through;
+}
+p
+{
+	text-align:left;
+}
+#Rifle
+{
+	font-family:"Times New Roman"
+}
+#introduce
+{
+	font-family:'Courier New', Courier, monospace
+}
+#introduce
+{
+	font-size:20px
+}

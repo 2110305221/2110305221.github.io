@@ -1,0 +1,2718 @@
+<!--
+    实现网页展示
+-->
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+    
+        <!--编译'utf-8'-->
+        <meta charset="utf-8">
+
+        <title>计算机科学与编程入门大作业</title>
+
+        <!--导入echarts组件-->
+        <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+        <script type="text/javascript" src="https://assets.pyecharts.org/assets/jquery.min.js"></script>
+        <script type="text/javascript" src="https://assets.pyecharts.org/assets/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://assets.pyecharts.org/assets/ResizeSensor.js"></script>
+        <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts-wordcloud.min.js"></script>
+
+        <link rel="stylesheet"  href="https://assets.pyecharts.org/assets/jquery-ui.css">
+
+
+        <!--不用css文件，直接写style-->
+        <style>
+            .container{
+                background-color: white;
+                height: 3000px;
+                width: 1300px;
+                margin: 0px auto;
+                padding: 0px;
+                color: black;
+                border-radius: 10px;
+                box-shadow: 10px 30px 20px #ccc;
+            }
+            .tab-container{
+                position: relative;
+            }
+            .tab-radio{
+                display: none;
+            }
+            .tab-lable{
+                display: inline-block;
+                height: 50px;
+                width: 100px;
+                line-height: 50px;
+                margin:0;
+                text-align: center;
+                background-color: #ddd;
+            }
+            .content{
+                position: absolute;
+                visibility: hidden;
+                top: 40px;
+                left: 0;
+                width: 1200px;
+                padding: 30px;
+                color: black;
+                font-size: 14px;
+                background-color: rgb(239, 239, 239);
+                transition: transform .5s, opacity .7s;
+                transform: translateY(20px);
+            }
+            .tab-radio:checked + .tab-lable + .content{
+                visibility: visible;
+            }
+            .tab-radio:checked + .tab-lable{
+                background-color: silver;
+            }
+			.highlight_text
+			{
+				color:red;
+				font-style:italic;
+                font-size: 20px;
+			}
+            .centered
+            {
+                text-align:center;
+            }
+            h1
+			{
+				color: orangered;
+                text-align:center;
+                font-size: 50px;
+			}	
+			h2
+			{
+				color: blue;
+                text-align:center;
+			}
+			h3
+			{
+				color: rgb(128, 0, 64);
+                font-size: 30px;
+                text-align:center;
+			}	
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <!--制作选项卡-->
+            <div class="tab-container">
+                <input type="radio" name="name" value="" id="tab-btn-1" class="tab-radio" checked="checked"/>
+                <label for="tab-btn-1" class="tab-lable">首页</label>
+                <div class="content">
+
+                    <h1>
+                        计算机科学与编程入门大作业
+                    </h1>
+
+                    <h2>
+                        李浩
+                        2110305221 基础医学院                        
+                    </h2>
+
+                    </br>
+
+                    <h3>
+                        目录
+                        </br>
+                        大作业介绍
+                        </br>
+                        柱状图展示
+                        </br>
+                        柱状图分析
+                        </br>
+                        词云图展示
+                        </br>
+                        词云图分析
+                    </h3>
+
+                </div>
+
+                <input type="radio" name="name" value="" id="tab-btn-2" class="tab-radio" checked="checked"/>
+                <label for="tab-btn-2" class="tab-lable">大作业介绍</label>
+                <div class="content">
+                    <h2>
+                        大作业介绍                      
+                    </h2>
+
+                    <p class="highlight_text">
+                        好大夫在线是一个拥有丰富信息的网站，在专家文章中有400多页家的科普文章，很具有参考价值，因此本网站制作者选择爬取了这些文章，并尝试去寻找当下热点的医学话题。
+                    </p>
+                    
+		            <p class="centered">
+                        <a href="https://www.haodf.com/neirong/wenzhang/list.html?page=1"><img width=500px alt="图片未显示" src="C:\Users\李浩\Desktop\myapps\计算机科学与编程入门\计算机科学与编程入门大作业\data\8.网页制作\好大夫在线网页一览.png">
+                        </a>
+                    </p>
+                    
+                    <p class="centered">
+                        点击图片访问网站
+                    </p>
+
+                    <p class="highlight_text">
+                        首先这些网站最有价值的信息是哪些栏目比较热门，哪些专家给出的意见最多，通过分析这些，可以得出当下比较迫切的医学问题。
+                    </p>
+
+                    <p class="highlight_text">
+                        通过python程序，利用爬虫将专家文章中的栏目、标题、作者、时间和链接爬取了下来，利用pandas将这些信息储存在csv文件中，并利用pandas进行了分析。
+                    </p>
+
+                    <p class="highlight_text">
+                        取分析出的结果，得到前十名的热门栏目与作者，以此制作柱状图，进行可视化展示。
+                    </p>
+                </div>
+
+                <input type="radio" name="name" value="" id="tab-btn-3" class="tab-radio"/>
+                <label for="tab-btn-3" class="tab-lable">柱状图展示</label>
+                <div class="content">
+
+                    <!--将precharts生成的柱状图代码复制粘贴过来-->
+                    <div class="box">
+
+                        <div id="01f6754a083447aebf2be76e55c9f5a2" class="chart-container" style="width:900px; height:500px;"></div>
+
+                        <script>
+                            var chart_01f6754a083447aebf2be76e55c9f5a2 = echarts.init(
+                                document.getElementById('01f6754a083447aebf2be76e55c9f5a2'),
+                                'white', 
+                                {renderer: 'canvas'}
+                            );
+                            var option_01f6754a083447aebf2be76e55c9f5a2 = {
+                                "animation": true,
+                                "animationThreshold": 2000,
+                                "animationDuration": 1000,
+                                "animationEasing": "cubicOut",
+                                "animationDelay": 0,
+                                "animationDurationUpdate": 300,
+                                "animationEasingUpdate": "cubicOut",
+                                "animationDelayUpdate": 0,
+                                "color": [
+                                    "green",
+                                    "#c23531",
+                                    "#2f4554",
+                                    "#61a0a8",
+                                    "#d48265",
+                                    "#749f83",
+                                    "#ca8622",
+                                    "#bda29a",
+                                    "#6e7074",
+                                    "#546570",
+                                    "#c4ccd3",
+                                    "#f05b72",
+                                    "#ef5b9c",
+                                    "#f47920",
+                                    "#905a3d",
+                                    "#fab27b",
+                                    "#2a5caa",
+                                    "#444693",
+                                    "#726930",
+                                    "#b2d235",
+                                    "#6d8346",
+                                    "#ac6767",
+                                    "#1d953f",
+                                    "#6950a1",
+                                    "#918597"
+                                ],
+
+                                "series": [
+                                    {
+                                        "type": "bar",
+                                        "name": "\u9891\u6b21",
+                                        "legendHoverLink": true,
+                                        "data": [
+                                            5412,
+                                            3286,
+                                            2950,
+                                            1698,
+                                            1552,
+                                            1309,
+                                            1270,
+                                            1185,
+                                            825,
+                                            739
+                                        ],
+
+                                        "showBackground": false,
+                                        "barMinHeight": 0,
+                                        "barCategoryGap": "20%",
+                                        "barGap": "30%",
+                                        "large": false,
+                                        "largeThreshold": 400,
+                                        "seriesLayoutBy": "column",
+                                        "datasetIndex": 0,
+                                        "clip": true,
+                                        "zlevel": 0,
+                                        "z": 2,
+                                        "label": {
+                                            "show": true,
+                                            "position": "top",
+                                            "margin": 8
+                                        }
+                                    }
+                                ],
+
+                                "legend": [
+                                    {
+                                        "data": [
+                                            "\u9891\u6b21"
+                                        ],
+
+                                        "selected": {
+                                            "\u9891\u6b21": true
+                                        },
+
+                                        "show": true,
+                                        "padding": 5,
+                                        "itemGap": 10,
+                                        "itemWidth": 25,
+                                        "itemHeight": 14
+                                    }
+                                ],
+
+                                "tooltip": {
+                                    "show": true,
+                                    "trigger": "item",
+                                    "triggerOn": "mousemove|click",
+
+                                    "axisPointer": {
+                                        "type": "line"
+                                    },
+
+                                    "showContent": true,
+                                    "alwaysShowContent": false,
+                                    "showDelay": 0,
+                                    "hideDelay": 100,
+
+                                    "textStyle": {
+                                        "fontSize": 14
+                                    },
+
+                                    "borderWidth": 0,
+                                    "padding": 5
+                                },
+
+                                "xAxis": [
+                                    {
+                                        "show": true,
+                                        "scale": false,
+                                        "nameLocation": "end",
+                                        "nameGap": 15,
+                                        "gridIndex": 0,
+                                        "inverse": false,
+                                        "offset": 0,
+                                        "splitNumber": 5,
+                                        "minInterval": 0,
+
+                                        "splitLine": {
+                                            "show": false,
+                                            "lineStyle": {
+                                                "show": true,
+                                                "width": 1,
+                                                "opacity": 1,
+                                                "curveness": 0,
+                                                "type": "solid"
+                                            }
+                                        },
+
+                                        "data": [
+                                            "\u80ba\u764c",
+                                            "\u4e73\u817a\u764c",
+                                            "\u8170\u690e\u95f4\u76d8\u7a81\u51fa",
+                                            "\u9ad8\u8840\u538b",
+                                            "\u4e59\u809d",
+                                            "\u809d\u764c",
+                                            "\u51a0\u5fc3\u75c5",
+                                            "\u80c3\u764c",
+                                            "\u5b50\u5bab\u808c\u7624",
+                                            "\u7532\u4ea2"
+                                        ]
+                                    }
+                                ],
+
+                                "yAxis": [
+                                    {
+                                        "show": true,
+                                        "scale": false,
+                                        "nameLocation": "end",
+                                        "nameGap": 15,
+                                        "gridIndex": 0,
+                                        "inverse": false,
+                                        "offset": 0,
+                                        "splitNumber": 5,
+                                        "minInterval": 0,
+                                        "splitLine": {
+                                            "show": false,
+                                            "lineStyle": {
+                                                "show": true,
+                                                "width": 1,
+                                                "opacity": 1,
+                                                "curveness": 0,
+                                                "type": "solid"
+                                            }
+                                        }
+                                    }
+                                ],
+
+                                "title": [
+                                    {
+                                        "text": "\u70ed\u95e8\u680f\u76ee\u67f1\u72b6\u56fe",
+                                        "padding": 5,
+                                        "itemGap": 10
+                                    }
+                                ],
+                                "dataZoom": {
+                                    "show": true,
+                                    "type": "slider",
+                                    "realtime": true,
+                                    "start": 20,
+                                    "end": 80,
+                                    "orient": "horizontal",
+                                    "zoomLock": false,
+                                    "filterMode": "filter"
+                                }
+                            };
+                            chart_01f6754a083447aebf2be76e55c9f5a2.setOption(option_01f6754a083447aebf2be76e55c9f5a2);
+                        </script>
+                            
+                        <br/>
+                        
+                        <div id="0f7a265079a74920986906f24295ce80" class="chart-container" style="width:900px; height:500px;"></div>
+
+                        <script>
+                            var chart_0f7a265079a74920986906f24295ce80 = echarts.init(
+                                document.getElementById('0f7a265079a74920986906f24295ce80'), 
+                                'white',
+                                {renderer: 'canvas'}
+                            );
+
+                            var option_0f7a265079a74920986906f24295ce80 = {
+                                "animation": true,
+                                "animationThreshold": 2000,
+                                "animationDuration": 1000,
+                                "animationEasing": "cubicOut",
+                                "animationDelay": 0,
+                                "animationDurationUpdate": 300,
+                                "animationEasingUpdate": "cubicOut",
+                                "animationDelayUpdate": 0,
+                                "color": [
+                                    "orange",
+                                    "#c23531",
+                                    "#2f4554",
+                                    "#61a0a8",
+                                    "#d48265",
+                                    "#749f83",
+                                    "#ca8622",
+                                    "#bda29a",
+                                    "#6e7074",
+                                    "#546570",
+                                    "#c4ccd3",
+                                    "#f05b72",
+                                    "#ef5b9c",
+                                    "#f47920",
+                                    "#905a3d",
+                                    "#fab27b",
+                                    "#2a5caa",
+                                    "#444693",
+                                    "#726930",
+                                    "#b2d235",
+                                    "#6d8346",
+                                    "#ac6767",
+                                    "#1d953f",
+                                    "#6950a1",
+                                    "#918597"
+                                ],
+
+                                "series": [
+                                    {
+                                        "type": "bar",
+                                        "name": "\u9891\u6b21",
+                                        "legendHoverLink": true,
+
+                                        "data": [
+                                            1252,
+                                            442,
+                                            260,
+                                            246,
+                                            228,
+                                            215,
+                                            206,
+                                            204,
+                                            168,
+                                            154
+                                        ],
+
+                                        "showBackground": false,
+                                        "barMinHeight": 0,
+                                        "barCategoryGap": "20%",
+                                        "barGap": "30%",
+                                        "large": false,
+                                        "largeThreshold": 400,
+                                        "seriesLayoutBy": "column",
+                                        "datasetIndex": 0,
+                                        "clip": true,
+                                        "zlevel": 0,
+                                        "z": 2,
+
+                                        "label": {
+                                            "show": true,
+                                            "position": "top",
+                                            "margin": 8
+                                        }
+                                    }
+                                ],
+                                "legend": [
+                                    {
+                                        "data": [
+                                            "\u9891\u6b21"
+                                        ],
+                                        "selected": {
+                                            "\u9891\u6b21": true
+                                        },
+                                        "show": true,
+                                        "padding": 5,
+                                        "itemGap": 10,
+                                        "itemWidth": 25,
+                                        "itemHeight": 14
+                                    }
+                                ],
+
+                                "tooltip": {
+                                    "show": true,
+                                    "trigger": "item",
+                                    "triggerOn": "mousemove|click",
+
+                                    "axisPointer": {
+                                        "type": "line"
+                                    },
+
+                                    "showContent": true,
+                                    "alwaysShowContent": false,
+                                    "showDelay": 0,
+                                    "hideDelay": 100,
+
+                                    "textStyle": {
+                                        "fontSize": 14
+                                    },
+                                    
+                                    "borderWidth": 0,
+                                    "padding": 5
+                                },
+
+                                "xAxis": [
+                                    {
+                                        "show": true,
+                                        "scale": false,
+                                        "nameLocation": "end",
+                                        "nameGap": 15,
+                                        "gridIndex": 0,
+                                        "inverse": false,
+                                        "offset": 0,
+                                        "splitNumber": 5,
+                                        "minInterval": 0,
+
+                                        "splitLine": {
+                                            "show": false,
+                                            "lineStyle": {
+                                                "show": true,
+                                                "width": 1,
+                                                "opacity": 1,
+                                                "curveness": 0,
+                                                "type": "solid"
+                                            }
+
+                                        },
+
+                                        "data": [
+                                            "\u5218\u61ff",
+                                            "\u80e1\u6d0b",
+                                            "\u738b\u661f",
+                                            "\u5434\u9ad8\u677e",
+                                            "\u8d3e\u94b0\u534e",
+                                            "\u5f20\u4e34\u53cb",
+                                            "\u8d75\u534e\u680b",
+                                            "\u738b\u6625\u559c",
+                                            "\u5ed6\u535a",
+                                            "\u674e\u660e\u6d32"
+                                        ]
+                                    }
+                                ],
+
+                                "yAxis": [
+                                    {
+                                        "show": true,
+                                        "scale": false,
+                                        "nameLocation": "end",
+                                        "nameGap": 15,
+                                        "gridIndex": 0,
+                                        "inverse": false,
+                                        "offset": 0,
+                                        "splitNumber": 5,
+                                        "minInterval": 0,
+
+                                        "splitLine": {
+                                            "show": false,
+
+                                            "lineStyle": {
+                                                "show": true,
+                                                "width": 1,
+                                                "opacity": 1,
+                                                "curveness": 0,
+                                                "type": "solid"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "title": [
+                                    {
+                                        "text": "\u70ed\u95e8\u4f5c\u8005\u67f1\u72b6\u56fe",
+                                        "padding": 5,
+                                        "itemGap": 10
+                                    }
+                                ],
+                                "dataZoom": {
+                                    "show": true,
+                                    "type": "slider",
+                                    "realtime": true,
+                                    "start": 20,
+                                    "end": 80,
+                                    "orient": "horizontal",
+                                    "zoomLock": false,
+                                    "filterMode": "filter"
+                                }
+                            };
+
+                            chart_0f7a265079a74920986906f24295ce80.setOption(option_0f7a265079a74920986906f24295ce80);
+                        </script>
+                        
+                    </div>
+
+                </div>
+
+
+                <input type="radio" name="name" value="" id="tab-btn-4" class="tab-radio" checked="checked"/>
+                <label for="tab-btn-4" class="tab-lable">柱状图分析</label>
+                <div class="content">
+                    <h2>
+                        柱状图分析                 
+                    </h2>
+
+                    <p class="highlight_text">
+                        从柱状图中可以得到，专家关注的热门栏目有肺癌，乳腺癌，腰椎间盘突出，高血压，乙肝，肝癌等，这和大众平时关注的疾病方向类似。
+                    </p>
+
+                    <p class="highlight_text">
+                        还能发现专家刘懿给出的专家意见最多，通过这些发现，我们可以统计出与肺癌有关的关键词，还有专家刘懿文章中的关键词并进行可视化词云图展示，可以找到这些文章的关注点。
+                    </p>
+
+                    <p class="highlight_text">
+                        对专家刘懿文章涉及的栏目进行分析，可以发现刘懿的文章大多涉及肺癌，这也许是与肺癌的文章较多的原因之一。
+                    </p>
+                    
+                    <table border="1" class="centered">
+                        <tr>
+                            <th>栏目</th>
+                            <th>出现次数</th>
+                        </tr>
+
+                        <tr>
+                            <td>肺癌</td>
+                            <td>1237</td>
+                        </tr>
+
+                        <tr>
+                            <td>感冒</td>
+                            <td>2</td>
+                        </tr>
+
+                        <tr>
+                            <td>乳腺癌</td>
+                            <td>2</td>
+                        </tr>
+
+                        <tr>
+                            <td>肺部结节</td>
+                            <td>2</td>
+                        </tr>
+
+                        <tr>
+                            <td>医疗健康</td>
+                            <td>2</td>
+                        </tr>
+
+                        <tr>
+                            <td>肝癌</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>小细胞肺癌</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>肺肿瘤</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>烟草依赖</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>喉肿瘤癌</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>肾癌</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>类癌</td>
+                            <td>1</td>
+                        </tr>
+                    </table>
+
+                    <p>
+                        刘懿文章涉及的栏目
+                    </p>
+
+                </div>
+
+                <input type="radio" name="name" value="" id="tab-btn-5" class="tab-radio"/>
+                <label for="tab-btn-5" class="tab-lable">词云图展示</label>
+                <div class="content">
+
+                    我是第三个tab
+
+                    <!--将precharts生成的云图代码复制粘贴过来-->
+                    <div class="box">
+
+                        <div id="5ade6b837fbd484886b77f2d6325f181" class="chart-container" style="width:900px; height:500px;"></div>
+                        
+                        <script>
+                            var chart_5ade6b837fbd484886b77f2d6325f181 = echarts.init(
+                                document.getElementById('5ade6b837fbd484886b77f2d6325f181'),
+                                'white', 
+                                {renderer: 'canvas'}
+                            );
+
+                            var option_5ade6b837fbd484886b77f2d6325f181 = {
+                                "animation": true,
+                                "animationThreshold": 2000,
+                                "animationDuration": 1000,
+                                "animationEasing": "cubicOut",
+                                "animationDelay": 0,
+                                "animationDurationUpdate": 300,
+                                "animationEasingUpdate": "cubicOut",
+                                "animationDelayUpdate": 0,
+
+                                "color": [
+                                    "#c23531",
+                                    "#2f4554",
+                                    "#61a0a8",
+                                    "#d48265",
+                                    "#749f83",
+                                    "#ca8622",
+                                    "#bda29a",
+                                    "#6e7074",
+                                    "#546570",
+                                    "#c4ccd3",
+                                    "#f05b72",
+                                    "#ef5b9c",
+                                    "#f47920",
+                                    "#905a3d",
+                                    "#fab27b",
+                                    "#2a5caa",
+                                    "#444693",
+                                    "#726930",
+                                    "#b2d235",
+                                    "#6d8346",
+                                    "#ac6767",
+                                    "#1d953f",
+                                    "#6950a1",
+                                    "#918597"
+                                ],
+
+                                "series": [
+                                    {
+                                        "type": "wordCloud",
+                                        "shape": "diamond",
+                                        "rotationRange": [
+                                            0,
+                                            0
+                                        ],
+                                        "rotationStep": 45,
+                                        "girdSize": 20,
+                                        "sizeRange": [
+                                            15,
+                                            50
+                                        ],
+                                        "data": [
+                                            {
+                                                "name": "\u80ba\u764c",
+                                                "value": "41433",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(92,139,97)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6cbb\u7597",
+                                                "value": "40988",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(19,106,76)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u60a3\u8005",
+                                                "value": "35096",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(126,71,148)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u80bf\u7624",
+                                                "value": "21972",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(159,107,21)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u624b\u672f",
+                                                "value": "17234",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(112,128,16)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53ef\u4ee5",
+                                                "value": "14390",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(21,151,28)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7ec6\u80de",
+                                                "value": "12968",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(30,127,17)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5316\u7597",
+                                                "value": "12081",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(97,103,73)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8f6c\u79fb",
+                                                "value": "11455",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(123,133,18)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7ed3\u8282",
+                                                "value": "10606",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(40,116,41)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53d1\u8868",
+                                                "value": "10185",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(119,67,36)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u672c\u6587",
+                                                "value": "10184",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(92,121,81)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8bca\u65ad",
+                                                "value": "9938",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(28,144,53)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u836f\u7269",
+                                                "value": "8907",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(142,26,73)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4f7f\u7528",
+                                                "value": "8812",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(63,30,154)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e0d\u80fd",
+                                                "value": "8430",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(49,61,36)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8fdb\u884c",
+                                                "value": "8017",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(150,0,128)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u9776\u5411",
+                                                "value": "7722",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(9,43,85)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5982\u679c",
+                                                "value": "7700",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(23,92,132)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7814\u7a76",
+                                                "value": "7426",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(137,74,124)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7535\u5b50\u8ba1\u7b97\u673a\u65ad\u5c42\u626b\u63cf",
+                                                "value": "7409",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(72,4,117)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53ef\u80fd",
+                                                "value": "7195",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(11,79,127)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6ca1\u6709",
+                                                "value": "7123",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(47,69,146)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53d1\u73b0",
+                                                "value": "7097",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(26,126,46)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u9700\u8981",
+                                                "value": "7008",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(86,134,54)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u68c0\u67e5",
+                                                "value": "6818",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(140,139,140)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u51fa\u73b0",
+                                                "value": "6809",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(41,147,48)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5bf9\u4e8e",
+                                                "value": "6736",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(134,68,117)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u533b\u751f",
+                                                "value": "6423",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(76,35,60)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e00\u4e2a",
+                                                "value": "6350",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(155,146,115)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5207\u9664",
+                                                "value": "6349",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(60,148,133)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5065\u5eb7",
+                                                "value": "6234",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(56,150,84)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u75c5\u4eba",
+                                                "value": "6178",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(71,97,48)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6211\u4eec",
+                                                "value": "6095",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(100,97,101)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u672f\u540e",
+                                                "value": "6062",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(116,63,19)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u65e9\u671f",
+                                                "value": "5883",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(11,155,1)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e34\u5e8a",
+                                                "value": "5813",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(72,98,81)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u764c\u75c7",
+                                                "value": "5793",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(156,107,107)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u80ba\u90e8",
+                                                "value": "5577",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(158,139,57)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u533b\u9662",
+                                                "value": "5381",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(70,74,44)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u57fa\u56e0",
+                                                "value": "5364",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(133,152,93)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7a81\u53d8",
+                                                "value": "5256",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(139,47,24)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8f6c\u8f7d",
+                                                "value": "5246",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(83,75,97)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4f9d\u636e",
+                                                "value": "5236",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(70,102,71)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u75c7\u72b6",
+                                                "value": "5219",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(49,22,137)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u79d1\u666e",
+                                                "value": "5136",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(138,45,98)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u665a\u671f",
+                                                "value": "5123",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(19,69,72)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u68c0\u6d4b",
+                                                "value": "5044",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(90,81,8)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u653e\u7597",
+                                                "value": "4959",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(75,58,1)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8c28\u614e",
+                                                "value": "4945",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(79,33,20)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6388\u6743",
+                                                "value": "4893",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(27,140,126)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53d1\u751f",
+                                                "value": "4882",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(44,27,128)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u817a\u764c",
+                                                "value": "4879",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(12,42,43)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4ec5\u4f9b",
+                                                "value": "4845",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(121,103,34)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53c2\u9605",
+                                                "value": "4835",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(37,137,149)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5df2\u8bfb",
+                                                "value": "4831",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(25,123,75)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8fd9\u4e2a",
+                                                "value": "4658",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(34,8,40)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u76ee\u524d",
+                                                "value": "4649",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(48,117,12)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u60c5\u51b5",
+                                                "value": "4608",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(129,151,42)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u672a\u7ecf",
+                                                "value": "4604",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(76,159,138)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8bf7\u52ff",
+                                                "value": "4520",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(105,19,34)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u75be\u75c5",
+                                                "value": "4511",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(128,129,123)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5c31\u662f",
+                                                "value": "4407",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(48,127,141)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6dcb\u5df4\u7ed3",
+                                                "value": "4396",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(88,69,147)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7248\u6743\u6240\u6709",
+                                                "value": "4190",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(118,24,115)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8868\u76ae\u751f\u957f\u56e0\u5b50\u53d7\u4f53\u4e00",
+                                                "value": "4183",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(39,45,108)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u75c5\u7406",
+                                                "value": "4108",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(86,39,121)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u514d\u75ab\u6cbb\u7597",
+                                                "value": "4066",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(89,70,149)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u901a\u8fc7",
+                                                "value": "4031",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(47,100,19)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5218\u61ff",
+                                                "value": "3977",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(113,66,91)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u65f6\u95f4",
+                                                "value": "3878",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(51,138,102)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e3b\u8981",
+                                                "value": "3867",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(54,104,25)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7ec4\u7ec7",
+                                                "value": "3763",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(26,20,7)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u65b9\u6848",
+                                                "value": "3747",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(31,1,0)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u590d\u53d1",
+                                                "value": "3724",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(142,67,131)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6216\u8005",
+                                                "value": "3716",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(35,157,118)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6548\u679c",
+                                                "value": "3666",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(45,20,19)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u95ee\u9898",
+                                                "value": "3646",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(63,63,129)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u73bb\u7483",
+                                                "value": "3615",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(75,91,52)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5305\u62ec",
+                                                "value": "3606",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(125,16,113)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6bd4\u8f83",
+                                                "value": "3603",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(145,39,127)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u9009\u62e9",
+                                                "value": "3572",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(99,134,40)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8f85\u52a9",
+                                                "value": "3568",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(1,79,108)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u75c5\u7076",
+                                                "value": "3526",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(123,31,4)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u514d\u75ab",
+                                                "value": "3485",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(153,152,108)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8054\u5408",
+                                                "value": "3481",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(146,1,39)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5176\u4ed6",
+                                                "value": "3385",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(6,90,31)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5efa\u8bae",
+                                                "value": "3363",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(111,28,103)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7597\u6548",
+                                                "value": "3340",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(138,121,97)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e00\u4e9b",
+                                                "value": "3329",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(5,125,159)"
+                                                    }
+                                                }
+                                            }
+                                        ],
+
+                                        "drawOutOfBound": false,
+                                        "textStyle": {
+                                            "normal": {
+                                                "fontFamily": "\u534e\u6587\u884c\u6977"
+                                            },
+                                            "emphasis": {}
+                                        }
+                                    }
+                                ],
+
+                                "legend": [
+                                    {
+                                        "data": [],
+                                        "selected": {},
+                                        "show": true,
+                                        "padding": 5,
+                                        "itemGap": 10,
+                                        "itemWidth": 25,
+                                        "itemHeight": 14
+                                    }
+                                ],
+
+                                "tooltip": {
+                                    "show": true,
+                                    "trigger": "item",
+                                    "triggerOn": "mousemove|click",
+                                    "axisPointer": {
+                                        "type": "line"
+                                    },
+                                    "showContent": true,
+                                    "alwaysShowContent": false,
+                                    "showDelay": 0,
+                                    "hideDelay": 100,
+                                    "textStyle": {
+                                        "fontSize": 14
+                                    },
+                                    "borderWidth": 0,
+                                    "padding": 5
+                                },
+
+                                "title": [
+                                    {
+                                        "text": "\u80ba\u764c\u9ad8\u9891\u8bcd\u4e91\u56fe",
+                                        "padding": 5,
+                                        "itemGap": 10
+                                    }
+                                ]
+                            };
+
+                            chart_5ade6b837fbd484886b77f2d6325f181.setOption(option_5ade6b837fbd484886b77f2d6325f181);
+                        </script>
+
+                        </br>
+
+                        <div id="9fa2910043ad44fa9821afbdb2751c1c" class="chart-container" style="width:900px; height:500px;"></div>
+                        
+                        <script>
+                            var chart_9fa2910043ad44fa9821afbdb2751c1c = echarts.init(
+                                document.getElementById('9fa2910043ad44fa9821afbdb2751c1c'), 'white', {renderer: 'canvas'});
+                            var option_9fa2910043ad44fa9821afbdb2751c1c = {
+                                "animation": true,
+                                "animationThreshold": 2000,
+                                "animationDuration": 1000,
+                                "animationEasing": "cubicOut",
+                                "animationDelay": 0,
+                                "animationDurationUpdate": 300,
+                                "animationEasingUpdate": "cubicOut",
+                                "animationDelayUpdate": 0,
+
+                                "color": [
+                                    "#c23531",
+                                    "#2f4554",
+                                    "#61a0a8",
+                                    "#d48265",
+                                    "#749f83",
+                                    "#ca8622",
+                                    "#bda29a",
+                                    "#6e7074",
+                                    "#546570",
+                                    "#c4ccd3",
+                                    "#f05b72",
+                                    "#ef5b9c",
+                                    "#f47920",
+                                    "#905a3d",
+                                    "#fab27b",
+                                    "#2a5caa",
+                                    "#444693",
+                                    "#726930",
+                                    "#b2d235",
+                                    "#6d8346",
+                                    "#ac6767",
+                                    "#1d953f",
+                                    "#6950a1",
+                                    "#918597"
+                                ],
+                                "series": [
+                                    {
+                                        "type": "wordCloud",
+                                        "shape": "star",
+
+                                        "rotationRange": [
+                                            0,
+                                            0
+                                        ],
+                                        "rotationStep": 45,
+                                        "girdSize": 20,
+                                        "sizeRange": [
+                                            15,
+                                            50
+                                        ],
+
+                                        "data": [
+                                            {
+                                                "name": "\u80ba\u764c",
+                                                "value": "4790",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(25,89,61)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6cbb\u7597",
+                                                "value": "4043",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(58,121,112)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5218\u61ff",
+                                                "value": "4030",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(30,107,16)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u60a3\u8005",
+                                                "value": "3754",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(128,131,15)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53ef\u4ee5",
+                                                "value": "3063",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(93,55,113)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u624b\u672f",
+                                                "value": "2870",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(107,39,26)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7ed3\u8282",
+                                                "value": "2798",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(36,89,25)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u672c\u6587",
+                                                "value": "2608",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(22,125,122)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53d1\u8868",
+                                                "value": "2525",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(135,79,33)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u80ba\u90e8",
+                                                "value": "2322",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(41,10,0)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6ca1\u6709",
+                                                "value": "2118",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(145,151,42)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5982\u679c",
+                                                "value": "2070",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(46,130,69)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e00\u4e2a",
+                                                "value": "1972",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(111,70,138)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8fd9\u4e2a",
+                                                "value": "1911",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(1,120,104)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u533b\u751f",
+                                                "value": "1773",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(125,150,78)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e0d\u80fd",
+                                                "value": "1763",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(101,147,72)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8bca\u65ad",
+                                                "value": "1634",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(2,159,96)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5927\u5bb6",
+                                                "value": "1617",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(122,64,110)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5bb6\u5c5e",
+                                                "value": "1524",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(159,91,159)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6388\u6743",
+                                                "value": "1496",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(149,46,70)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u603b\u533b\u9662",
+                                                "value": "1432",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(55,35,115)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5929\u6d25\u533b\u79d1\u5927\u5b66",
+                                                "value": "1430",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(47,64,85)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8f6c\u8f7d",
+                                                "value": "1370",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(41,19,130)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u672a\u7ecf",
+                                                "value": "1368",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(25,34,33)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8bf7\u52ff",
+                                                "value": "1367",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(100,29,73)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53d1\u73b0",
+                                                "value": "1346",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(158,147,118)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u80bf\u7624\u5916\u79d1",
+                                                "value": "1344",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(155,44,90)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4f7f\u7528",
+                                                "value": "1330",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(153,93,57)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u95ee\u9898",
+                                                "value": "1330",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(49,132,74)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5065\u5eb7",
+                                                "value": "1318",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(121,51,45)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6bd4\u8f83",
+                                                "value": "1318",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(18,98,49)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u79d1\u666e",
+                                                "value": "1270",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(40,44,28)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4f9d\u636e",
+                                                "value": "1260",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(105,49,154)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8c28\u614e",
+                                                "value": "1245",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(64,144,147)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4ec5\u4f9b",
+                                                "value": "1242",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(39,42,1)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5df2\u8bfb",
+                                                "value": "1240",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(115,93,133)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7248\u6743\u6240\u6709",
+                                                "value": "1240",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(24,31,95)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53c2\u9605",
+                                                "value": "1240",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(68,50,142)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7535\u5b50\u8ba1\u7b97\u673a\u65ad\u5c42\u626b\u63cf",
+                                                "value": "1225",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(88,115,89)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5c31\u662f",
+                                                "value": "1190",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(133,8,69)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u9700\u8981",
+                                                "value": "1189",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(18,84,128)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u81ea\u5df1",
+                                                "value": "1175",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(139,156,14)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6211\u4eec",
+                                                "value": "1136",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(88,144,127)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u533b\u9662",
+                                                "value": "1042",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(7,64,95)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8f6c\u79fb",
+                                                "value": "1028",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(138,129,119)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u73b0\u5728",
+                                                "value": "1004",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(97,158,47)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5316\u7597",
+                                                "value": "1000",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(47,108,74)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u89c9\u5f97",
+                                                "value": "963",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(116,32,7)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6216\u8005",
+                                                "value": "940",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(115,11,39)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u80bf\u7624",
+                                                "value": "927",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(1,157,153)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e4b\u524d",
+                                                "value": "893",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(57,78,32)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u53ef\u80fd",
+                                                "value": "892",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(117,140,159)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5bf9\u4e8e",
+                                                "value": "880",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(25,52,128)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u590d\u67e5",
+                                                "value": "842",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(76,112,16)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8fd8\u662f",
+                                                "value": "825",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(66,84,8)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u75c5\u7406",
+                                                "value": "822",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(77,23,63)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8fd9\u6837",
+                                                "value": "817",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(64,2,58)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u670b\u53cb",
+                                                "value": "816",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(83,15,1)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5f88\u591a",
+                                                "value": "787",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(87,4,116)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8fdb\u884c",
+                                                "value": "758",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(98,11,21)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u56e0\u4e3a",
+                                                "value": "736",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(104,5,55)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6709\u4e9b",
+                                                "value": "729",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(76,35,121)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e0d\u662f",
+                                                "value": "718",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(47,97,122)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u9776\u5411",
+                                                "value": "713",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(106,155,128)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e00\u4f4d",
+                                                "value": "707",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(52,102,121)"
+                                                    }
+                                                }
+                                            },
+                                            
+                                            {
+                                                "name": "\u770b\u5230",
+                                                "value": "667",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(104,107,61)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u6548\u679c",
+                                                "value": "667",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(15,130,10)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u68c0\u67e5",
+                                                "value": "646",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(150,88,34)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8003\u8651",
+                                                "value": "642",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(141,110,113)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e4b\u540e",
+                                                "value": "616",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(117,78,23)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8fd9\u4f4d",
+                                                "value": "613",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(13,90,24)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u7247\u5b50",
+                                                "value": "610",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(153,15,132)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u60c5\u51b5",
+                                                "value": "589",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(101,122,67)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u54a8\u8be2",
+                                                "value": "581",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(22,91,150)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u80f8\u90e8",
+                                                "value": "574",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(68,57,73)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4e00\u4e0b",
+                                                "value": "570",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(86,100,120)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u901a\u8fc7",
+                                                "value": "563",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(37,148,45)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u62a5\u544a",
+                                                "value": "548",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(117,116,138)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u8eab\u4f53",
+                                                "value": "545",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(5,50,102)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5df2\u7ecf",
+                                                "value": "543",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(107,53,153)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5efa\u8bae",
+                                                "value": "532",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(153,67,142)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4eca\u5929",
+                                                "value": "532",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(13,159,45)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u4ec0\u4e48",
+                                                "value": "530",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(45,47,75)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u5207\u9664",
+                                                "value": "525",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(23,90,92)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u73bb\u7483",
+                                                "value": "511",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(155,55,68)"
+                                                    }
+                                                }
+                                            },
+
+                                            {
+                                                "name": "\u77e5\u9053",
+                                                "value": "507",
+                                                "textStyle": {
+                                                    "normal": {
+                                                        "color": "rgb(88,141,144)"
+                                                    }
+                                                }
+                                            }
+                                        ],
+
+                                        "drawOutOfBound": false,
+                                        "textStyle": {
+                                            "normal": {
+                                                "fontFamily": "\u534e\u6587\u884c\u6977"
+                                            },
+                                            "emphasis": {}
+                                        }
+                                    }
+                                ],
+
+                                "legend": [
+                                    {
+                                        "data": [],
+                                        "selected": {},
+                                        "show": true,
+                                        "padding": 5,
+                                        "itemGap": 10,
+                                        "itemWidth": 25,
+                                        "itemHeight": 14
+                                    }
+                                ],
+
+                                "tooltip": {
+                                    "show": true,
+                                    "trigger": "item",
+                                    "triggerOn": "mousemove|click",
+                                    "axisPointer": {
+                                        "type": "line"
+                                    },
+                                    "showContent": true,
+                                    "alwaysShowContent": false,
+                                    "showDelay": 0,
+                                    "hideDelay": 100,
+                                    "textStyle": {
+                                        "fontSize": 14
+                                    },
+                                    "borderWidth": 0,
+                                    "padding": 5
+                                },
+
+                                "title": [
+                                    {
+                                        "text": "\u5218\u61ff\u6587\u7ae0\u9ad8\u9891\u8bcd",
+                                        "padding": 5,
+                                        "itemGap": 10
+                                    }
+                                ]
+                            };
+
+                            chart_9fa2910043ad44fa9821afbdb2751c1c.setOption(option_9fa2910043ad44fa9821afbdb2751c1c);
+                        </script>
+
+                    </div>
+
+                </div>
+
+                <input type="radio" name="name" value="" id="tab-btn-6" class="tab-radio" checked="checked"/>
+                <label for="tab-btn-6" class="tab-lable">词云图分析</label>
+                <div class="content">
+                    <h2>
+                        词云图分析                 
+                    </h2>
+
+                    <p class="highlight_text">
+                        从词云图中可以发现，在有关肺癌的文章中，化疗、手术、结节、细胞、转移等词出现频率比较高。
+                    </p>
+
+                    <p class="highlight_text">
+                        这些词涉及了肿瘤的特征和主要治疗手段，虽然没有直接的统计价值，但是这些可能激发医学小白的兴趣。
+                    </p>
+
+                    <p class="highlight_text">
+                        从词云图中可以发现，在专家刘懿的文章中，患者、治疗、肺癌等词出现频率比较高。
+                    </p>
+
+                    <p class="highlight_text">
+                        从这些词中可以窥见专家刘懿的身份和主要领域。
+                    </p>
+                </div>
+                    
+            </div>
+
+        </div>
+
+    </body>
+
+</html>
